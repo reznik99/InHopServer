@@ -34,7 +34,10 @@ module.exports = (passport) => {
                 // Create new user (HASH PASSWORD)
                 bcrypt.hash(password, BCRYPT_SALT_ROUNDS, (err, hash) => {
                     pool.query('INSERT INTO users VALUES ($1, $2) RETURNING *', [username, hash], (err, results) => {
-                        return done(null, results.rows[0]);
+                        if (err)
+                            console.log(err.stack)
+                        else
+                            return done(null, results.rows[0]);
                     });
                 });
             }
