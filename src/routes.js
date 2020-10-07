@@ -4,13 +4,15 @@ const pool = require('./config/dbConfig').pool;
 const createRoutes = (app, passport) => {
 
     app.post('/testLogin', (req, res) => {
+	console.log("testLogin");
         res.status(200).send({message: "Error, incorrect username/password!"});
-
     });
 
     app.post('/login', (req, res, next) => {
+	console.log("body parsing", req.body);
         passport.authenticate('login', (err, user, info) => {
-            if (err)
+            console.log("test");
+	    if (err)
                 console.error(`error ${err}`);
 
             else if (info !== undefined) {
@@ -33,7 +35,7 @@ const createRoutes = (app, passport) => {
                     });
                 });
             }
-        });
+        })(req, res, next);
     });
 
     app.post('/signup', (req, res, next) => {
