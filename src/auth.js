@@ -25,7 +25,7 @@ module.exports = (passport) => {
     }, (username, password, done) => {
 
         pool.query('SELECT username FROM users WHERE username=$1', [username], (err, results) => {
-	    if (err) {
+            if (err) {
                 console.log(err.stack)
             } else {
                 if (results.rows.length > 0)
@@ -49,7 +49,7 @@ module.exports = (passport) => {
     }, (username, password, done) => {
 
         pool.query('SELECT * FROM users WHERE username=$1', [username], (err, results) => {
-	    if (err) {
+            if (err) {
                 console.log(err.stack)
             } else {
                 if (results.rows.length < 1)
