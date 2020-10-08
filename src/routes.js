@@ -4,18 +4,24 @@ const pool = require('./config/dbConfig').pool;
 const createRoutes = (app, passport) => {
 
     app.post('/login', (req, res, next) => {
-        console.log("Request recieved: ", req.body);
         passport.authenticate('login', (err, user, info) => {
-            if (err)
+            //Internal error
+            if (err) {
                 console.error(`error ${err}`);
-
-            else if (info !== undefined) {
-                console.error(info.message);
-                if (info.message === 'Invalid username and/or password')
-                    res.status(401).send(info.message);
-                else
-                    res.status(403).send(info.message);
+                res.status(500).send({
+                    auth: false, message: err,
+                });
             }
+            //Unauthorized
+            else if (info !== undefined) {
+                let errorCode = 403;
+                console.error(info.message);
+                if (info.message === 'Invalid username and/or password') errorCode = 401;
+                res.status(errorCode).send({
+                    auth: false, message: info.message,
+                });
+            }
+            //Authorized
             else {
                 console.log(user);
                 res.status(200).send({
