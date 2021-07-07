@@ -1,11 +1,12 @@
 
-require('dotenv').config({ path: "./src/.env" });
-
 const express = require('express'),
     passport = require('passport'),
     bodyParser = require("body-parser"),
+    path = require('path'),
     createRoutes = require('./routes'),
     auth = require('./auth');
+
+require('dotenv').config({ path: path.join(__dirname, '.env') })
 
 const PORT = process.env.PORT || 4444;
 const app = express();
